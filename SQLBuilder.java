@@ -1,4 +1,3 @@
-
 /**
  * The SQLBuilder class serves to abstract the unnecessary work in creating a 
  * PREPARED SQL Statement using the JDBC library.
@@ -12,7 +11,7 @@
  * This class uses an approach similar to the Builder Pattern. 
  * 
  * 
- * This class only creates the logical block.
+ * This class creates the logical block.
  * (Everything after the 'WHERE' SQL Statement) 
  *                     
  *                      //Column  //Comparison //Value
@@ -20,6 +19,8 @@
  *              //Logic //Column  //Comparison //Value
  *                   .OR("username", "=","salman")
  *                   .AND("AND", "age",">=","18");
+ * 
+ * 
  * 
  * The equivilant query would be:
  *                  "Select * From table WHERE username = vj OR 
