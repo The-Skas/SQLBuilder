@@ -35,7 +35,7 @@
  * (This PreparedStatement prevents SQLInjections!)
  *                  
  * 
- * @author Salman Khalifa
+ * @author Salman Khalifa (The-Skas)
  */
 import java.sql.Connection;
 import java.sql.PreparedStatement;
