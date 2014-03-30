@@ -67,7 +67,7 @@ public class SQLBuilder {
      */
     public SQLBuilder()
     {
-        //Hacky but works for abstraction. This sets a default query. 
+        //Hacky but works for abstraction. This sets a WHERE 1=1, which is equivilant to SELECT * FROM TABLENAME . 
       this("1","=","1");
     }
     public SQLBuilder(String column, String compr, String value)
@@ -169,8 +169,14 @@ public class SQLBuilder {
         return this;
     }
     
+    //Combines both functions into one. ONLY WORKS ON SELECT
+    public ResultSet prepareAndExecute(Connection dbConn, String query) throws SQLException
+    {
+        query = toPreparedStatement(query);
+        return executeStatement(dbConn, query);
+    }
     
-    //Executes A statement, returning a result set. Check JDBC Documentation for
+     //Executes A statement, returning a result set. Check JDBC Documentation for
     //what a result Set is :)
     public ResultSet executeStatement(Connection dbConn, String preparedQuery) throws SQLException
     {
@@ -181,39 +187,10 @@ public class SQLBuilder {
             pS.setString(i, qBlock[VALUE]);
             i++;
         }
-        //System.out.println(pS);
         return pS.executeQuery();
         
     } 
-    
-    
-    
-    public void prepare(PreparedStatement pS) throws SQLException
-    {
-        int i = 1;
-        for(String[] qBlock : this.qBlocks)
-        {
-            pS.setString(i, qBlock[VALUE]);
-            i++;
-        }
-    }
-    //Combines both functions into one. ONLY WORKS ON SELECT
-    public ResultSet prepareAndExecute(Connection dbConn, String query) throws SQLException
-    {
-        query = PreparedStatementWhere(query);
-        return executeStatement(dbConn, query);
-    }
-    
     //Formats Query, Taking into account the passed, SELECT * from table
-    public String PreparedStatementWhere(String query)
-    {
-        for(String[] qBlock : this.qBlocks)
-        {
-            query +=" "+qBlock[LOGIC]+" "+qBlock[COLUMN]+" "+qBlock[COMPR]+" "+"?";
-        }
-        return query;
-    }
-    
     public String toPreparedStatement(String query)
     {
       for(String[] qBlock : this.qBlocks)
